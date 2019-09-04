@@ -6,19 +6,19 @@ import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.net.Socket;
 import java.net.UnknownHostException;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.Arrays;
+import java.util.Vector;
 import javax.swing.DefaultListModel;
 import chatting.domain.Account;
+import chatting.domain.Rooms;
 import chatting.view.error.RoomInError;
-import chatting.view.room.RoomPanel;
 
 public class RoomService {
 
-  public static List<RoomPanel> getRoom() {
+  public static Vector<Vector<String>> getRoom() {
 
     System.out.println("RoomService getRoom()");
-    List<RoomPanel> rooms = new ArrayList<>();
+    Vector<Vector<String>> rooms = new Vector<>();
 
     try (Socket sock = new Socket("127.0.0.1", 5001);
         PrintWriter writer = new PrintWriter(sock.getOutputStream());
@@ -40,7 +40,9 @@ public class RoomService {
         System.out.println(line);
 
         // RoomPanel 템플릿에 데이터를 넣고 저장
-        rooms.add(new RoomPanel(temp[0], temp[1], temp[2]));
+        if (Rooms.getRooms().contains(Integer.parseInt(temp[0])))
+          continue;
+        rooms.add(new Vector<>(Arrays.asList(temp[0], temp[1], temp[2] + "명", "입장")));
       }
 
     } catch (UnknownHostException e) {
@@ -96,8 +98,8 @@ public class RoomService {
   // 방입장 메소드
   // 현재 채팅방 사람에 대한 리스트를 반환
   public static synchronized DefaultListModel<String> roomIn(int roomNumber, Account account,
-      PrintWriter writer, BufferedReader reader) {
-
+      PrintWriter writer, BufferedReader reader) {      
+      
     System.out.println("RoomService.roomIn()");
     DefaultListModel<String> model = new DefaultListModel<String>();
     try {
@@ -114,6 +116,7 @@ public class RoomService {
         }
         System.out.println("line : " + line);
         model.addElement(line);
+        Rooms.getRooms().add(roomNumber);
       }
 
       System.out.println("방 입장 성공");

@@ -1,21 +1,31 @@
 package chatting.view.room;
 
+import java.awt.Component;
+import java.awt.Dimension;
 import java.awt.EventQueue;
+import java.awt.Point;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.util.List;
-import javax.swing.JButton;
-import javax.swing.JFrame;
-import javax.swing.JLabel;
-import javax.swing.JList;
-import javax.swing.JScrollPane;
-import javax.swing.ListSelectionModel;
-import javax.swing.ScrollPaneConstants;
-import chatting.model.RoomService;
-import java.awt.Dimension;
-import javax.swing.JPanel;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
+import java.util.Vector;
+import javax.swing.BoxLayout;
+import javax.swing.JButton;
+import javax.swing.JFrame;
+import javax.swing.JList;
+import javax.swing.JPanel;
+import javax.swing.JScrollPane;
+import javax.swing.JTable;
+import javax.swing.ListSelectionModel;
+import javax.swing.ScrollPaneConstants;
+import javax.swing.event.ListSelectionEvent;
+import javax.swing.event.ListSelectionListener;
+import javax.swing.table.DefaultTableModel;
+import chatting.domain.Rooms;
+import chatting.model.RoomService;
+import chatting.view.chat.ChatView;
 
 
 
@@ -24,6 +34,12 @@ public class RoomView {
   private static JFrame frame;
 
   private static JPanel panel;
+
+  private static JTable table;
+
+  private static DefaultTableModel tableModel;
+
+  private static JButton reFreshButton;
 
   /**
    * Launch the application.
@@ -57,7 +73,7 @@ public class RoomView {
    * @param reader
    * @param writer
    */
-  private static void initialize(List<RoomPanel> roomList) {
+  private static void initialize(Vector<Vector<String>> roomList) {
 
     frame = new JFrame();
     frame.addWindowListener(new WindowAdapter() {
@@ -91,12 +107,39 @@ public class RoomView {
     frame.getContentPane().add(scrollPane);
 
     panel = new JPanel();
+    panel.setAlignmentX(Component.LEFT_ALIGNMENT);
     scrollPane.setViewportView(panel);
-    for (RoomPanel data : roomList) {
-      panel.add(data);
-    }
 
     panel.setPreferredSize(new Dimension(300, 300));
+    tableModel = new DefaultTableModel(new Object[][] {}, new String[] {"번호", "제목", "인원수", "입장"});
+
+    for (Vector<String> data : roomList) {
+      tableModel.addRow(data);
+    }
+    panel.setLayout(new BoxLayout(panel, BoxLayout.X_AXIS));
+
+    table = new JTable(tableModel);
+
+    table.setAlignmentX(Component.LEFT_ALIGNMENT);
+    table.setAlignmentY(Component.TOP_ALIGNMENT);
+    table.getColumnModel().getColumn(0).setPreferredWidth(10);
+    table.getColumnModel().getColumn(1).setPreferredWidth(230);
+    table.getColumnModel().getColumn(2).setPreferredWidth(30);
+    table.getColumnModel().getColumn(3).setPreferredWidth(30);
+
+    table.addMouseListener(new MouseAdapter() {
+
+      public void mousePressed(MouseEvent mouseEvent) {
+
+        JTable table = (JTable) mouseEvent.getSource();
+        if (mouseEvent.getClickCount() == 2 && table.getSelectedRow() != -1) {
+          ChatView chatView = new ChatView();
+          chatView.go(Integer.parseInt(table.getValueAt(table.getSelectedRow(), 0).toString()));
+        }
+      }
+    });
+
+    panel.add(table);
     JButton enterButton = new JButton("생성");
     enterButton.setBounds(76, 438, 70, 23);
     frame.getContentPane().add(enterButton);
@@ -113,53 +156,41 @@ public class RoomView {
     });
 
     JButton exitButton = new JButton("종료");
+    exitButton.addActionListener(new ActionListener() {
+
+      public void actionPerformed(ActionEvent e) {
+
+        System.exit(1);
+      }
+    });
     exitButton.setBounds(158, 438, 70, 23);
     frame.getContentPane().add(exitButton);
 
-    JButton reFreshButton = new JButton("새로고침");
+    reFreshButton = new JButton("새로고침");
+
     reFreshButton.addActionListener(new ActionListener() {
 
       public void actionPerformed(ActionEvent e) {
 
         panel = new JPanel();
-        List<RoomPanel> roomList = RoomService.getRoom();
-        for (RoomPanel data : roomList) {
-          panel.add(data);
+        tableModel = (DefaultTableModel) table.getModel();
+        tableModel.getDataVector().removeAllElements();
+        tableModel.fireTableDataChanged();
+        Vector<Vector<String>> roomList = RoomService.getRoom();
+        for (Vector<String> data : roomList) {
+          tableModel.addRow(data);
         }
-        
+        table.setModel(tableModel);
+
         frame.repaint();
         frame.revalidate();
-        
+
 
       }
     });
     reFreshButton.setBounds(242, 438, 116, 23);
     frame.getContentPane().add(reFreshButton);
     frame.setResizable(false);
-
-  }
-
-  class RoomList extends JScrollPane {
-
-    JLabel no;
-
-    JLabel contents;
-
-    JLabel owner;
-
-    private static final long serialVersionUID = 1L;
-
-    public RoomList(String no, String contents, String owner) {
-
-      this.no = new JLabel(no);
-      this.contents = new JLabel(contents);
-      this.owner = new JLabel(owner);
-      add(this.no);
-      add(this.contents);
-      add(this.owner);
-    }
-
-
 
   }
 }

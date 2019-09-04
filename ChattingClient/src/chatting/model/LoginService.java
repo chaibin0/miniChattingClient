@@ -5,11 +5,14 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
 import java.io.PrintWriter;
+import java.net.ConnectException;
 import java.net.Socket;
 import java.net.UnknownHostException;
 import java.time.LocalDateTime;
 import chatting.domain.Account;
 import chatting.view.error.LoginError;
+import chatting.view.error.LoginExistError;
+import chatting.view.error.ServerConnectError;
 import chatting.view.error.SignUpError;
 
 public class LoginService {
@@ -34,6 +37,9 @@ public class LoginService {
         if (message.equals("nothing")) {
           LoginError.go();
           return false;
+        } else if (message.equals("exist")) {
+          LoginExistError.go();
+          return false;
         } else {
           Account.newAccount(userId, message);
           System.out.println("로그인 성공 userID");
@@ -45,8 +51,13 @@ public class LoginService {
         return false;
 
       }
+    } catch (ConnectException e) {
+      System.out.println("서버 접속을 실패하였습니다");
+      ServerConnectError.go();
+      e.printStackTrace();
     } catch (UnknownHostException e) {
       System.out.println("서버 접속을 실패하였습니다");
+      ServerConnectError.go();
       e.printStackTrace();
     } catch (IOException e) {
       e.printStackTrace();
@@ -71,6 +82,9 @@ public class LoginService {
           SignUpError error = new SignUpError();
           error.go();
           return false;
+        } else if (message.equals("exist")) {
+          SignUpError error = new SignUpError();
+          error.go();
         } else {
 
           System.out.println("회원가입 성공");

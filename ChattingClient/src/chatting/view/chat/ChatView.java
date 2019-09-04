@@ -151,8 +151,12 @@ public class ChatView {
 
       public void actionPerformed(ActionEvent e) {
 
+        if (isError) {
+          return;
+        }
         ChatService.sendMessage(roomNumber, textField.getText(), writer);
         textField.setText("");
+        textField.requestFocus();
       }
     });
 
@@ -173,8 +177,7 @@ public class ChatView {
         String message;
         while (true) {
           while ((message = reader.readLine()) != null) {
-            System.out.println(message);
-            String[] order = message.split("&");
+            String[] order = message.split("&",-1);
             System.out.println("Order : " + order[1]);
             if (order[0].equals("sendMessage")) {
               textArea.append(order[1] + " : " + order[3] + "\n");
@@ -182,8 +185,6 @@ public class ChatView {
             }
 
             if (order[0].equals("in")) {
-              System.out.println("order[1] : " + order[1]);
-
               members.addElement(order[1]);
               list.setModel(members);
               list.setSelectedIndex(0);
@@ -211,12 +212,12 @@ public class ChatView {
         e.printStackTrace();
       } catch (IOException e) {
         System.out.println("데이터가 제대로 전송되지 않았습니다");
-        textArea.append("데이터가 제대로 전송되지 않았습니다");
+        textArea.append("데이터가 제대로 전송되지 않았습니다\n");
         isError = true;
         e.printStackTrace();
       } catch (ArrayIndexOutOfBoundsException e) {
         System.out.println("데이터가 제대로 전송되지 않았습니다");
-        textArea.append("데이터가 제대로 전송되지 않았습니다");
+        textArea.append("데이터가 제대로 전송되지 않았습니다\n");
         isError = true;
         e.printStackTrace();
       }
