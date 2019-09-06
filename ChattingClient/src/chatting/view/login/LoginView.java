@@ -11,6 +11,7 @@ import chatting.model.LoginService;
 import chatting.view.room.RoomView;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
+import javax.swing.JPasswordField;
 
 public class LoginView {
 
@@ -20,8 +21,6 @@ public class LoginView {
 
   private JTextField loginField;
 
-  private JTextField pwdField;
-
   private JLabel loginLabel;
 
   private JLabel pwdLabel;
@@ -29,6 +28,7 @@ public class LoginView {
   private JButton loginButton;
 
   private JButton signUpButton;
+  private JPasswordField pwdField;
 
 
   /**
@@ -62,8 +62,6 @@ public class LoginView {
     pwdLabel.setBounds(71, 233, 62, 15);
     loginField = new JTextField(10);
     loginField.setBounds(171, 188, 116, 21);
-    pwdField = new JTextField(10);
-    pwdField.setBounds(171, 230, 116, 21);
     loginButton = new JButton("로그인");
     loginButton.setBounds(138, 295, 106, 36);
     loginPanel.setLayout(null);
@@ -71,7 +69,6 @@ public class LoginView {
     loginPanel.add(loginLabel);
     loginPanel.add(loginField);
     loginPanel.add(pwdLabel);
-    loginPanel.add(pwdField);
     loginPanel.add(loginButton);
 
     loginButton.addActionListener(new ActionListener() {
@@ -80,9 +77,7 @@ public class LoginView {
       public void actionPerformed(ActionEvent e) {
 
         LoginService loginService = new LoginService();
-        System.out.println(loginField.getText());
-        System.out.println(pwdField.getText());
-        if (loginService.findByUserIdAndPwd(loginField.getText(), pwdField.getText())) {
+        if (loginService.findByUserIdAndPwd(loginField.getText(), pwdField.getPassword())) {
           frame.setVisible(false);
           RoomView.go();
         } else {
@@ -106,9 +101,11 @@ public class LoginView {
     });
     signUpButton.setBounds(138, 347, 106, 36);
     loginPanel.add(signUpButton);
+    
+    pwdField = new JPasswordField();
+    pwdField.setBounds(171, 230, 116, 21);
+    loginPanel.add(pwdField);
     frame.setSize(400, 500);
     frame.setVisible(true);
   }
-
-
 }

@@ -58,16 +58,12 @@ public class ChatView {
    */
   public void go(int roomNumber) {
 
-
-    System.out.println("Chat go()");
     try {
       socket = new Socket("127.0.0.1", 5001);
       reader = new BufferedReader(new InputStreamReader(socket.getInputStream()));
       writer = new PrintWriter(socket.getOutputStream());
       Account account = Account.getAccount();
       members = RoomService.roomIn(roomNumber, account, writer, reader);
-
-      // ChatService.startChatting(account, reader, writer);
       initialize(roomNumber, reader, writer);
       frame.setVisible(true);
 
@@ -128,6 +124,10 @@ public class ChatView {
 
     textField = new JTextField();
     textField.setBounds(12, 337, 257, 21);
+    
+    /**
+     * ENTER를 할 경우 입력버튼과 동일한 기능으로 처리
+     */
     textField.addKeyListener(new KeyAdapter() {
 
       @Override
@@ -159,8 +159,10 @@ public class ChatView {
         textField.requestFocus();
       }
     });
-
+    
+    
     Thread ChattingThread = new Thread(new ChattingReader());
+    //서버와 항시 연결되어있어야 한다.
     ChattingThread.start();
     frame.getContentPane().add(btnNewButton);
 
@@ -177,7 +179,7 @@ public class ChatView {
         String message;
         while (true) {
           while ((message = reader.readLine()) != null) {
-            String[] order = message.split("&",-1);
+            String[] order = message.split("&", -1);
             System.out.println("Order : " + order[1]);
             if (order[0].equals("sendMessage")) {
               textArea.append(order[1] + " : " + order[3] + "\n");

@@ -17,14 +17,13 @@ import chatting.view.error.SignUpError;
 
 public class LoginService {
 
-  // PrintWriter writer;
-  public boolean findByUserIdAndPwd(String userId, String pwd) {
+  public boolean findByUserIdAndPwd(String userId, char[] pwd) {
 
     try (Socket sock = new Socket("127.0.0.1", 5001);
         PrintWriter writer = new PrintWriter(new OutputStreamWriter(sock.getOutputStream()));
         BufferedReader reader = new BufferedReader(new InputStreamReader(sock.getInputStream()))) {
 
-      writer.write("find " + userId + " " + pwd + "\n");
+      writer.write("find " + userId + " " + SecurityService.encrypt(new String(pwd)) + "\n");
       writer.flush();
 
       // 로그인 확인 결과
@@ -66,13 +65,14 @@ public class LoginService {
 
   }
 
-  public static boolean signUp(String userId, String pwd, String name) {
+  public static boolean signUp(String userId, char[] pwd, String name) {
 
     try (Socket sock = new Socket("127.0.0.1", 5001);
         PrintWriter writer = new PrintWriter(new OutputStreamWriter(sock.getOutputStream()));
         BufferedReader reader = new BufferedReader(new InputStreamReader(sock.getInputStream()))) {
 
-      writer.println("signup " + userId + " " + pwd + " " + name);
+      writer.println(
+          "signup " + userId + " " + SecurityService.encrypt(new String(pwd)) + " " + name);
       writer.flush();
 
       // 로그인 확인 결과

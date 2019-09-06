@@ -80,12 +80,12 @@ public class MakeRoomView {
     panel.add(textField);
     textField.setColumns(10);
 
-    JLabel label = new JLabel("제목");
-    label.setBounds(42, 36, 57, 15);
-    panel.add(label);
+    JLabel titleLabel = new JLabel("제목");
+    titleLabel.setBounds(42, 36, 57, 15);
+    panel.add(titleLabel);
 
-    JButton button = new JButton("생성");
-    button.addActionListener(new ActionListener() {
+    JButton makeButton = new JButton("생성");
+    makeButton.addActionListener(new ActionListener() {
 
       public void actionPerformed(ActionEvent e) {
 
@@ -100,7 +100,7 @@ public class MakeRoomView {
     });
 
 
-    button.setBounds(257, 214, 97, 23);
-    panel.add(button);
+    makeButton.setBounds(257, 214, 97, 23);
+    panel.add(makeButton);
   }
 }

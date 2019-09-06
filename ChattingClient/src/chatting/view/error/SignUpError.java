@@ -5,6 +5,7 @@ import javax.swing.JLabel;
 import javax.swing.JButton;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
+import java.awt.Dimension;
 
 
 public class SignUpError extends JFrame {
@@ -12,13 +13,15 @@ public class SignUpError extends JFrame {
   private static final long serialVersionUID = 1L;
 
   public SignUpError() {
+    setSize(new Dimension(300, 300));
+    setPreferredSize(new Dimension(300, 300));
 
     setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
     setType(Type.POPUP);
     getContentPane().setLayout(null);
 
     JLabel label = new JLabel("회원가입 실패하였습니다.");
-    label.setBounds(130, 109, 215, 15);
+    label.setBounds(69, 89, 172, 15);
     getContentPane().add(label);
 
     JButton checkButton = new JButton("확인");
@@ -29,7 +32,7 @@ public class SignUpError extends JFrame {
         dispose();
       }
     });
-    checkButton.setBounds(158, 195, 97, 23);
+    checkButton.setBounds(91, 147, 97, 23);
     getContentPane().add(checkButton);
   }
 

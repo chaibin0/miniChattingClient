@@ -21,9 +21,9 @@ public class LoginExistError {
     frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
     frame.getContentPane().setLayout(null);
 
-    JLabel lblNewLabel = new JLabel("이미 로그인 중입니다.");
-    lblNewLabel.setBounds(191, 85, 209, 77);
-    frame.getContentPane().add(lblNewLabel);
+    JLabel errorLabel = new JLabel("이미 로그인 중입니다.");
+    errorLabel.setBounds(191, 85, 209, 77);
+    frame.getContentPane().add(errorLabel);
 
     JButton btnNewButton = new JButton("확인");
     btnNewButton.addActionListener(new ActionListener() {

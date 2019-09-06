@@ -2,6 +2,7 @@ package chatting.model;
 
 import java.io.PrintWriter;
 import chatting.domain.Account;
+import chatting.domain.Rooms;
 
 public class ChatService {
 
@@ -32,7 +33,7 @@ public class ChatService {
 
     System.out.println("outOfChatRoom()");
     Account account = Account.getAccount();
-
+    Rooms.getRooms().remove(roomNumber);
     // 데이터 전송
     writer.println("out" + "&" + account.getUserId() + "&" + roomNumber);
     writer.flush();

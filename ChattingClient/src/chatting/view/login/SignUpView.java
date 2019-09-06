@@ -8,6 +8,7 @@ import javax.swing.JButton;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 import java.awt.Dimension;
+import javax.swing.JPasswordField;
 
 
 public class SignUpView extends JFrame {
@@ -16,9 +17,9 @@ public class SignUpView extends JFrame {
 
   private JTextField userIdField;
 
-  private JTextField pwdField;
-
   private JTextField nameField;
+
+  private JPasswordField pwdField;
 
   public SignUpView() {
 
@@ -35,11 +36,6 @@ public class SignUpView extends JFrame {
     userIdField.setBounds(170, 88, 155, 44);
     getContentPane().add(userIdField);
     userIdField.setColumns(10);
-
-    pwdField = new JTextField();
-    pwdField.setBounds(170, 172, 155, 44);
-    getContentPane().add(pwdField);
-    pwdField.setColumns(10);
 
     nameField = new JTextField();
     nameField.setBounds(170, 245, 155, 44);
@@ -63,7 +59,7 @@ public class SignUpView extends JFrame {
 
       public void actionPerformed(ActionEvent e) {
 
-        LoginService.signUp(userIdField.getText(), pwdField.getText(), nameField.getText());
+        LoginService.signUp(userIdField.getText(), pwdField.getPassword(), nameField.getText());
         setVisible(false);
       }
     });
@@ -80,5 +76,9 @@ public class SignUpView extends JFrame {
     });
     cancelButton.setBounds(228, 376, 97, 23);
     getContentPane().add(cancelButton);
+
+    pwdField = new JPasswordField();
+    pwdField.setBounds(170, 172, 155, 44);
+    getContentPane().add(pwdField);
   }
 }
