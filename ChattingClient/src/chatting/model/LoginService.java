@@ -85,7 +85,7 @@ public class LoginService {
       error.go();
       return false;
     }
-    if (!checkUserId(userId) || !checkPwd(new String(pwd))) {
+    if (!checkUserId(userId) && !checkPwd(new String(pwd))) {
       SignUpError error = new SignUpError("아이디 비밀번호 형식이 잘못 됐습니다.");
       error.go();
       return false;
