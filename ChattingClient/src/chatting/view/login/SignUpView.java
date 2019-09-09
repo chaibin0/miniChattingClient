@@ -1,14 +1,14 @@
 package chatting.view.login;
 
-import javax.swing.JFrame;
-import javax.swing.JTextField;
 import chatting.model.LoginService;
-import javax.swing.JLabel;
-import javax.swing.JButton;
-import java.awt.event.ActionListener;
-import java.awt.event.ActionEvent;
 import java.awt.Dimension;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import javax.swing.JButton;
+import javax.swing.JFrame;
+import javax.swing.JLabel;
 import javax.swing.JPasswordField;
+import javax.swing.JTextField;
 
 
 public class SignUpView extends JFrame {
@@ -21,6 +21,9 @@ public class SignUpView extends JFrame {
 
   private JPasswordField pwdField;
 
+  /**
+   * 회원가입을 하기 위한 뷰.
+   */
   public SignUpView() {
 
     setName("Chatting signUp");
@@ -59,8 +62,10 @@ public class SignUpView extends JFrame {
 
       public void actionPerformed(ActionEvent e) {
 
-        LoginService.signUp(userIdField.getText(), pwdField.getPassword(), nameField.getText());
-        setVisible(false);
+        if (LoginService.signUp(userIdField.getText(), pwdField.getPassword(),
+            nameField.getText())) {
+          setVisible(false);
+        }
       }
     });
     signUpButton.setBounds(46, 376, 97, 23);

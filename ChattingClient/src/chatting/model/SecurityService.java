@@ -6,6 +6,12 @@ import java.security.NoSuchAlgorithmException;
 
 public class SecurityService {
 
+  /**
+   * 비밀번호를 MessageDigest를 통해 데이터를 암호화시킵니다.
+   * 
+   * @param input 암호화할 데이터
+   * @return
+   */
   public static String encrypt(String input) {
 
     try {
@@ -17,10 +23,7 @@ public class SecurityService {
         hashtext = "0" + hashtext;
       }
       return hashtext;
-    }
-
-    // For specifying wrong message digest algorithms
-    catch (NoSuchAlgorithmException e) {
+    } catch (NoSuchAlgorithmException e) {
       throw new RuntimeException(e);
     }
   }

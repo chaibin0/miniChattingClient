@@ -15,7 +15,14 @@ public class Account {
 
     return account;
   }
-  
+
+  /**
+   * 아이디 객체 생성해주는 메소드.
+   * 
+   * @param userId 아이디
+   * @param name 비밀번호
+   * @return Account객체를 반환
+   */
   public static Account newAccount(String userId, String name) {
 
     account = new Account();

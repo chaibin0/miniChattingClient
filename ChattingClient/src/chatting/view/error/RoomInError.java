@@ -1,16 +1,20 @@
 package chatting.view.error;
 
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
-import javax.swing.JButton;
-import java.awt.event.ActionListener;
-import java.awt.event.ActionEvent;
+
 
 
 public class RoomInError extends JFrame {
 
   private static final long serialVersionUID = 1L;
 
+  /**
+   * 방이 삭제되었거나 존재하지 않을 경우 보여주는 뷰.
+   */
   public RoomInError() {
 
     setType(Type.POPUP);

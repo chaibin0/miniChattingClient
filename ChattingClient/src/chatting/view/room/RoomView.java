@@ -1,5 +1,7 @@
 package chatting.view.room;
 
+import chatting.model.RoomService;
+import chatting.view.chat.ChatView;
 import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.EventQueue;
@@ -20,8 +22,6 @@ import javax.swing.JTable;
 import javax.swing.ListSelectionModel;
 import javax.swing.ScrollPaneConstants;
 import javax.swing.table.DefaultTableModel;
-import chatting.model.RoomService;
-import chatting.view.chat.ChatView;
 
 
 
@@ -38,10 +38,7 @@ public class RoomView {
   private static JButton reFreshButton;
 
   /**
-   * Launch the application.
-   * 
-   * @param reader
-   * @param writer
+   * 채팅방 리스트를 보여주는 메소드.
    * 
    * @wbp.parser.entryPoint
    */
@@ -62,12 +59,37 @@ public class RoomView {
     });
   }
 
+  /**
+   * 검색해서 나온 채팅방 리스트를 다시 뷰를 업데이트 하는 메소드.
+   * 
+   * @param roomList 채팅방 리스트
+   */
+  public static void search(Vector<Vector<String>> roomList) {
+
+    refreshTable(roomList);
+
+  }
+
+  private static void refreshTable(Vector<Vector<String>> roomList) {
+
+    panel = new JPanel();
+    tableModel = (DefaultTableModel) table.getModel();
+    tableModel.getDataVector().removeAllElements();
+    tableModel.fireTableDataChanged();
+    for (Vector<String> data : roomList) {
+      tableModel.addRow(data);
+    }
+    table.setModel(tableModel);
+
+    frame.repaint();
+    frame.revalidate();
+
+  }
 
   /**
-   * Initialize the contents of the frame.
+   * 초기화 메소드.
    * 
-   * @param reader
-   * @param writer
+   * @param roomList 채팅방 리스트
    */
   private static void initialize(Vector<Vector<String>> roomList) {
 
@@ -95,7 +117,7 @@ public class RoomView {
     scrollPane.setSize(new Dimension(400, 400));
     scrollPane.setPreferredSize(new Dimension(400, 400));
 
-    scrollPane.setBounds(30, 30, 333, 398);
+    scrollPane.setBounds(30, 30, 340, 398);
     scrollPane.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);
     scrollPane.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
 
@@ -130,14 +152,15 @@ public class RoomView {
         JTable table = (JTable) mouseEvent.getSource();
         if (mouseEvent.getClickCount() == 2 && table.getSelectedRow() != -1) {
           ChatView chatView = new ChatView();
-          chatView.go(Integer.parseInt(table.getValueAt(table.getSelectedRow(), 0).toString()));
+          chatView.go(Integer.parseInt(table.getValueAt(table.getSelectedRow(), 0).toString()),
+              table.getValueAt(table.getSelectedRow(), 1).toString());
         }
       }
     });
 
     panel.add(table);
     JButton enterButton = new JButton("생성");
-    enterButton.setBounds(76, 438, 70, 23);
+    enterButton.setBounds(24, 438, 70, 23);
     frame.getContentPane().add(enterButton);
 
     // 방생성하는 창 나오게 한다.
@@ -159,7 +182,7 @@ public class RoomView {
         System.exit(1);
       }
     });
-    exitButton.setBounds(158, 438, 70, 23);
+    exitButton.setBounds(300, 438, 70, 23);
     frame.getContentPane().add(exitButton);
 
     reFreshButton = new JButton("새로고침");
@@ -168,24 +191,23 @@ public class RoomView {
 
       public void actionPerformed(ActionEvent e) {
 
-        panel = new JPanel();
-        tableModel = (DefaultTableModel) table.getModel();
-        tableModel.getDataVector().removeAllElements();
-        tableModel.fireTableDataChanged();
         Vector<Vector<String>> roomList = RoomService.getRoom();
-        for (Vector<String> data : roomList) {
-          tableModel.addRow(data);
-        }
-        table.setModel(tableModel);
-
-        frame.repaint();
-        frame.revalidate();
-
-
+        refreshTable(roomList);
       }
     });
-    reFreshButton.setBounds(242, 438, 116, 23);
+    reFreshButton.setBounds(106, 438, 102, 23);
     frame.getContentPane().add(reFreshButton);
+
+    JButton searchButton = new JButton("검색");
+    searchButton.addActionListener(new ActionListener() {
+
+      public void actionPerformed(ActionEvent e) {
+
+        SearchRoomView.go();
+      }
+    });
+    searchButton.setBounds(218, 438, 70, 23);
+    frame.getContentPane().add(searchButton);
     frame.setResizable(false);
 
   }

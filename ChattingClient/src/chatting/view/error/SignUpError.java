@@ -1,18 +1,23 @@
 package chatting.view.error;
 
+import java.awt.Dimension;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
-import javax.swing.JButton;
-import java.awt.event.ActionListener;
-import java.awt.event.ActionEvent;
-import java.awt.Dimension;
-
 
 public class SignUpError extends JFrame {
 
   private static final long serialVersionUID = 1L;
 
-  public SignUpError() {
+  /**
+   * 회원가입 실패시 나타나는 뷰.
+   * 
+   * @param message 회원가입 실패한 메시지 내용.
+   */
+  public SignUpError(String message) {
+
     setSize(new Dimension(300, 300));
     setPreferredSize(new Dimension(300, 300));
 
@@ -20,7 +25,7 @@ public class SignUpError extends JFrame {
     setType(Type.POPUP);
     getContentPane().setLayout(null);
 
-    JLabel label = new JLabel("회원가입 실패하였습니다.");
+    JLabel label = new JLabel(message);
     label.setBounds(69, 89, 172, 15);
     getContentPane().add(label);
 

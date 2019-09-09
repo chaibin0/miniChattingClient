@@ -1,17 +1,21 @@
 package chatting.view.error;
 
+import java.awt.Window.Type;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
-import javax.swing.JButton;
-import java.awt.Window.Type;
-import java.awt.event.ActionListener;
-import java.awt.event.ActionEvent;
+
 
 
 public class LoginExistError {
 
   private static JFrame frame;
 
+  /**
+   * 로그인이 존재할 경우 보여주는 뷰 메소드.
+   */
   public static void go() {
 
     frame = new JFrame();

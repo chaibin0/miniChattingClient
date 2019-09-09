@@ -1,10 +1,17 @@
 package chatting.view.chat;
 
+import chatting.domain.Account;
+import chatting.model.ChatService;
+import chatting.model.RoomService;
 import java.awt.Color;
 import java.awt.Font;
 import java.awt.Window.Type;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.KeyAdapter;
+import java.awt.event.KeyEvent;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -16,17 +23,11 @@ import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JList;
+import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
-import chatting.domain.Account;
-import chatting.model.ChatService;
-import chatting.model.RoomService;
-import java.awt.event.KeyAdapter;
-import java.awt.event.KeyEvent;
-import java.awt.event.WindowAdapter;
-import java.awt.event.WindowEvent;
-import javax.swing.JScrollPane;
 import javax.swing.ScrollPaneConstants;
+
 
 public class ChatView {
 
@@ -50,13 +51,16 @@ public class ChatView {
 
   private JScrollPane scrollPane;
 
+  private JLabel titleLabel;
+
+  private JLabel numberLabel;
+
   /**
    * Launch the application.
    * 
-   * @param sock
    * @wbp.parser.entryPoint
    */
-  public void go(int roomNumber) {
+  public void go(int roomNumber, String roomName) {
 
     try {
       socket = new Socket("127.0.0.1", 5001);
@@ -64,7 +68,12 @@ public class ChatView {
       writer = new PrintWriter(socket.getOutputStream());
       Account account = Account.getAccount();
       members = RoomService.roomIn(roomNumber, account, writer, reader);
-      initialize(roomNumber, reader, writer);
+
+      if (members.isEmpty()) {
+        return;
+      }
+
+      initialize(roomNumber, roomName, reader, writer);
       frame.setVisible(true);
 
 
@@ -78,10 +87,12 @@ public class ChatView {
   /**
    * Initialize the contents of the frame.
    * 
-   * @param writer
-   * @param reader
+   * @param roomName 방번호
+   * @param writer 클라이언트 출력 소켓
+   * @param reader 클라이언트 입력 소켓
    */
-  private void initialize(int roomNumber, BufferedReader reader, PrintWriter writer) {
+  private void initialize(int roomNumber, String roomName, BufferedReader reader,
+      PrintWriter writer) {
 
     frame = new JFrame();
     frame.addWindowListener(new WindowAdapter() {
@@ -106,7 +117,7 @@ public class ChatView {
 
     scrollPane = new JScrollPane(textArea);
     scrollPane.setAutoscrolls(true);
-    scrollPane.setBounds(12, 28, 257, 286);
+    scrollPane.setBounds(12, 83, 257, 231);
     scrollPane.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_NEVER);
     frame.getContentPane().add(scrollPane);
 
@@ -124,7 +135,7 @@ public class ChatView {
 
     textField = new JTextField();
     textField.setBounds(12, 337, 257, 21);
-    
+
     /**
      * ENTER를 할 경우 입력버튼과 동일한 기능으로 처리
      */
@@ -159,12 +170,20 @@ public class ChatView {
         textField.requestFocus();
       }
     });
-    
-    
-    Thread ChattingThread = new Thread(new ChattingReader());
-    //서버와 항시 연결되어있어야 한다.
-    ChattingThread.start();
+
+
+    Thread chattingThread = new Thread(new ChattingReader());
+    // 서버와 항시 연결되어있어야 한다.
+    chattingThread.start();
     frame.getContentPane().add(btnNewButton);
+
+    titleLabel = new JLabel(roomName);
+    titleLabel.setBounds(69, 29, 200, 44);
+    frame.getContentPane().add(titleLabel);
+
+    numberLabel = new JLabel(String.valueOf(roomNumber));
+    numberLabel.setBounds(12, 29, 45, 44);
+    frame.getContentPane().add(numberLabel);
 
 
 
@@ -176,40 +195,12 @@ public class ChatView {
     public synchronized void run() {
 
       try {
-        String message;
-        while (true) {
-          while ((message = reader.readLine()) != null) {
-            String[] order = message.split("&", -1);
-            System.out.println("Order : " + order[1]);
-            if (order[0].equals("sendMessage")) {
-              textArea.append(order[1] + " : " + order[3] + "\n");
+        ChatService chatService = new ChatService();
+        chatService.run(reader, textArea, list, members, frame);
 
-            }
-
-            if (order[0].equals("in")) {
-              members.addElement(order[1]);
-              list.setModel(members);
-              list.setSelectedIndex(0);
-              textArea.append(order[1] + "님이 입장하였습니다.\n");
-
-
-            }
-
-            if (order[0].equals("out")) {
-              members.removeElement(order[1]);
-              list.setModel(members);
-              list.setSelectedIndex(0);
-              textArea.append(order[1] + "님이 퇴장하였습니다.\n");
-
-            }
-            list.repaint();
-            textArea.repaint();
-            frame.validate();
-          }
-        }
       } catch (SocketException e) {
-        System.out.println("서버와의 접속이 끊어졌습니다");
         textArea.append("서버와의 접속이 끊어졌습니다.\n");
+        System.out.println("서버와의 접속이 끊어졌습니다");
         isError = true;
         e.printStackTrace();
       } catch (IOException e) {

@@ -1,17 +1,18 @@
 package chatting.view.login;
 
+import chatting.model.LoginService;
+import chatting.view.room.RoomView;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
-import javax.swing.JTextField;
-import chatting.model.LoginService;
-import chatting.view.room.RoomView;
-import java.awt.event.WindowAdapter;
-import java.awt.event.WindowEvent;
 import javax.swing.JPasswordField;
+import javax.swing.JTextField;
+
 
 public class LoginView {
 
@@ -28,6 +29,7 @@ public class LoginView {
   private JButton loginButton;
 
   private JButton signUpButton;
+
   private JPasswordField pwdField;
 
 
@@ -101,7 +103,7 @@ public class LoginView {
     });
     signUpButton.setBounds(138, 347, 106, 36);
     loginPanel.add(signUpButton);
-    
+
     pwdField = new JPasswordField();
     pwdField.setBounds(171, 230, 116, 21);
     loginPanel.add(pwdField);

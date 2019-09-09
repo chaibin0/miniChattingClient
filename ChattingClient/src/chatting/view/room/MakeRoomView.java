@@ -1,18 +1,16 @@
 package chatting.view.room;
 
-import java.awt.EventQueue;
-import javax.swing.JFrame;
-import javax.swing.JPanel;
-import java.awt.BorderLayout;
-import javax.swing.JTextField;
 import chatting.model.RoomService;
 import chatting.view.chat.ChatView;
-import javax.swing.JLabel;
-import javax.swing.JButton;
+import java.awt.BorderLayout;
 import java.awt.Window.Type;
-import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
-
+import java.awt.event.ActionListener;
+import javax.swing.JButton;
+import javax.swing.JFrame;
+import javax.swing.JLabel;
+import javax.swing.JPanel;
+import javax.swing.JTextField;
 
 public class MakeRoomView {
 
@@ -21,49 +19,22 @@ public class MakeRoomView {
   private JTextField textField;
 
   /**
-   * Launch the application.
-   * 
-   * @param sock
-   * @param reader
-   * @param writer
+   * 채팅방을 만드는 뷰.
    */
   public static void go() {
 
-    EventQueue.invokeLater(new Runnable() {
-
-      public void run() {
-
-        try {
-          MakeRoomView window = new MakeRoomView();
-          window.frame.setVisible(true);
-        } catch (Exception e) {
-          e.printStackTrace();
-        }
-      }
-    });
-
-
+    MakeRoomView window = new MakeRoomView();
+    window.frame.setVisible(true);
   }
 
   /**
-   * Create the application.
-   * 
-   * @param sock
-   * @param reader
-   * @param writer
+   * 뷰를 초기화해주는 생성자.
    */
   public MakeRoomView() {
 
     initialize();
   }
 
-  /**
-   * Initialize the contents of the frame.
-   * 
-   * @param sock
-   * @param reader
-   * @param writer
-   */
   private void initialize() {
 
     frame = new JFrame();
@@ -93,8 +64,7 @@ public class MakeRoomView {
         if (roomNumber != 0) {
           frame.dispose();
           ChatView chatView = new ChatView();
-//          RoomService.getRoom();
-          chatView.go(roomNumber);
+          chatView.go(roomNumber, textField.getText());
         }
       }
     });
