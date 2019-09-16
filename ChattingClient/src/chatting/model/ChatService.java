@@ -10,6 +10,7 @@ import javax.swing.DefaultListModel;
 import javax.swing.JFrame;
 import javax.swing.JList;
 import javax.swing.JTextArea;
+import javax.swing.text.DefaultCaret;
 
 
 public class ChatService {
@@ -61,6 +62,7 @@ public class ChatService {
       throws IOException, SocketException, ArrayIndexOutOfBoundsException {
 
     String message;
+    
     while (true) {
       while ((message = reader.readLine()) != null) {
         String[] order = message.split("&", -1);
@@ -82,8 +84,9 @@ public class ChatService {
           list.setModel(members);
           list.setSelectedIndex(0);
           textArea.append(order[1] + "님이 퇴장하였습니다.\n");
-
         }
+        
+        
         list.repaint();
         textArea.repaint();
         frame.validate();

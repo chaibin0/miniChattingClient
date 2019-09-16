@@ -32,6 +32,7 @@ import javax.swing.SwingConstants;
 import javax.swing.border.LineBorder;
 import javax.swing.border.EtchedBorder;
 import javax.swing.border.MatteBorder;
+import javax.swing.text.DefaultCaret;
 
 
 public class ChatView {
@@ -123,7 +124,8 @@ public class ChatView {
     textArea.setBackground(new Color(255, 255, 224));
     textArea.setLineWrap(true);
     textArea.setEditable(false);
-
+    DefaultCaret caret = (DefaultCaret) textArea.getCaret();
+    caret.setUpdatePolicy(DefaultCaret.ALWAYS_UPDATE);
     scrollPane = new JScrollPane(textArea);
     scrollPane.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);
     scrollPane.setBounds(12, 83, 257, 231);
