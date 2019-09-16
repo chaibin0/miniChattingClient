@@ -1,6 +1,6 @@
 package chatting.view.error;
 
-import java.awt.EventQueue;
+import java.awt.Color;
 import java.awt.Window.Type;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -11,41 +11,16 @@ import javax.swing.JLabel;
 
 public class LoginError {
 
-  private JFrame frame;
+  private static JFrame frame;
 
   /**
-   * Launch the application.
+   * 로그인 형식이 맞지 않을 경우 나타나는 뷰.
    */
   public static void go() {
-
-    EventQueue.invokeLater(new Runnable() {
-
-      public void run() {
-
-        try {
-          LoginError window = new LoginError();
-          window.frame.setVisible(true);
-        } catch (Exception e) {
-          e.printStackTrace();
-        }
-      }
-    });
-  }
-
-  /**
-   * Create the application.
-   */
-  public LoginError() {
-
-    initialize();
-  }
-
-  /**
-   * Initialize the contents of the frame.
-   */
-  private void initialize() {
-
     frame = new JFrame();
+
+    frame.setTitle("Login Error - Chatting");
+    frame.getContentPane().setBackground(new Color(238, 232, 170));
     frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
     frame.setType(Type.POPUP);
     frame.setBounds(100, 100, 291, 153);
@@ -65,5 +40,7 @@ public class LoginError {
     });
     btnNewButton.setBounds(89, 71, 97, 23);
     frame.getContentPane().add(btnNewButton);
+    frame.setVisible(true);
   }
+
 }

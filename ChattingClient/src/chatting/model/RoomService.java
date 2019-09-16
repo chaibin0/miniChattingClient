@@ -196,8 +196,7 @@ public class RoomService {
       e.printStackTrace();
     } catch (IOException e) {
       System.out.println("방이 없습니다.");
-      RoomInError roomInError = new RoomInError();
-      roomInError.setVisible(true);
+      RoomInError.go();
       e.printStackTrace();
     }
     return model;

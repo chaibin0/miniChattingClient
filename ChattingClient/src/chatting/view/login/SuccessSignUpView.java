@@ -1,5 +1,6 @@
 package chatting.view.login;
 
+import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -26,7 +27,7 @@ public class SuccessSignUpView extends JFrame {
    * 회원가입 화면 뷰를 초기화 한다.
    */
   public SuccessSignUpView() {
-
+    setTitle("Success SignUp - Chatting");
     setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
     setSize(new Dimension(300, 300));
     getContentPane().setLayout(null);
@@ -34,6 +35,7 @@ public class SuccessSignUpView extends JFrame {
     JLabel showLabel = new JLabel("회원가입 성공");
     showLabel.setBounds(97, 109, 99, 15);
     getContentPane().add(showLabel);
+    getContentPane().setBackground(new Color(238, 232, 170));
 
     JButton exitButton = new JButton("확인");
     exitButton.addActionListener(new ActionListener() {

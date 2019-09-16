@@ -10,6 +10,7 @@ import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JRadioButton;
 import javax.swing.JTextField;
+import java.awt.Color;
 
 
 public class SearchRoomView {
@@ -46,6 +47,9 @@ public class SearchRoomView {
   private void initialize() {
 
     frame = new JFrame();
+    frame.setTitle("Search Room - Chatting");
+    frame.getContentPane().setBackground(new Color(238, 232, 170));
+    frame.setBackground(new Color(250, 250, 210));
     frame.setType(Type.POPUP);
     frame.setBounds(100, 100, 450, 370);
     frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
@@ -61,6 +65,7 @@ public class SearchRoomView {
     titleField.setColumns(10);
 
     titleRadioButton = new JRadioButton("제목으로 검색");
+    titleRadioButton.setBackground(new Color(238, 232, 170));
     titleRadioButton.addActionListener(new ActionListener() {
 
       public void actionPerformed(ActionEvent e) {
@@ -82,6 +87,7 @@ public class SearchRoomView {
     numberField.setColumns(10);
 
     numberRadioButton = new JRadioButton("번호로 검색");
+    numberRadioButton.setBackground(new Color(238, 232, 170));
     numberRadioButton.addActionListener(new ActionListener() {
 
       public void actionPerformed(ActionEvent e) {

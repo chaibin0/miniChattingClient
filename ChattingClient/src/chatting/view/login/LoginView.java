@@ -1,6 +1,7 @@
 package chatting.view.login;
 
 import chatting.model.LoginService;
+import chatting.view.error.LoginError;
 import chatting.view.room.RoomView;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -12,6 +13,9 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JPasswordField;
 import javax.swing.JTextField;
+import javax.swing.SwingConstants;
+import java.awt.Font;
+import java.awt.Color;
 
 
 public class LoginView {
@@ -46,7 +50,7 @@ public class LoginView {
 
   private void guiSetup() {
 
-    frame = new JFrame("Chatting Login");
+    frame = new JFrame("Login - Chatting");
     frame.addWindowListener(new WindowAdapter() {
 
       @Override
@@ -57,6 +61,7 @@ public class LoginView {
     });
 
     loginPanel = new JPanel();
+    loginPanel.setBackground(new Color(240, 230, 140));
     loginPanel.setBounds(0, 0, 394, 471);
     loginLabel = new JLabel("아이디");
     loginLabel.setBounds(71, 191, 48, 15);
@@ -82,8 +87,6 @@ public class LoginView {
         if (loginService.findByUserIdAndPwd(loginField.getText(), pwdField.getPassword())) {
           frame.setVisible(false);
           RoomView.go();
-        } else {
-          // 에러 화면
         }
       }
     });
@@ -107,6 +110,12 @@ public class LoginView {
     pwdField = new JPasswordField();
     pwdField.setBounds(171, 230, 116, 21);
     loginPanel.add(pwdField);
+    
+    JLabel titleLabel = new JLabel("CHATTING");
+    titleLabel.setFont(new Font("휴먼둥근헤드라인", Font.BOLD, 22));
+    titleLabel.setHorizontalAlignment(SwingConstants.CENTER);
+    titleLabel.setBounds(107, 81, 178, 36);
+    loginPanel.add(titleLabel);
     frame.setSize(400, 500);
     frame.setVisible(true);
   }

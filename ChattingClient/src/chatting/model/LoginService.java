@@ -26,17 +26,21 @@ public class LoginService {
    */
   public boolean findByUserIdAndPwd(String userId, char[] pwd) {
 
+    if (userId.isEmpty() || pwd.length == 0) {
+      LoginError.go();
+      return false;
+    }
+
     try (Socket sock = new Socket("127.0.0.1", 5001);
         PrintWriter writer = new PrintWriter(new OutputStreamWriter(sock.getOutputStream()));
         BufferedReader reader = new BufferedReader(new InputStreamReader(sock.getInputStream()))) {
-
       writer.write("find" + "&" + userId + "&" + SecurityService.encrypt(new String(pwd)) + "\n");
       writer.flush();
 
       // 로그인 확인 결과
       String message = "";
       boolean flag = false;
-      while ((message = reader.readLine()) != null) {
+      while (((message = reader.readLine()) != null)) {
         flag = true;
         if (message.equals("nothing")) {
           LoginError.go();
@@ -52,6 +56,7 @@ public class LoginService {
       }
       if (!flag) {
         System.out.println("로그인 실패");
+        LoginError.go();
         return false;
 
       }
@@ -81,13 +86,13 @@ public class LoginService {
   public static boolean signUp(String userId, char[] pwd, String name) {
 
     if (isNull(userId, pwd, name)) {
-      SignUpError error = new SignUpError("모든 데이터를 입력해주세요.");
-      error.go();
+      SignUpError.go("모든 데이터를 입력해주세요.");
+
       return false;
     }
     if (!checkUserId(userId) && !checkPwd(new String(pwd))) {
-      SignUpError error = new SignUpError("아이디 비밀번호 형식이 잘못 됐습니다.");
-      error.go();
+      SignUpError.go("아이디 비밀번호 형식이 잘못 됐습니다.");
+
       return false;
     }
 
@@ -102,12 +107,10 @@ public class LoginService {
       String message = "";
       while ((message = reader.readLine()) != null) {
         if (message.equals("fail")) {
-          SignUpError error = new SignUpError("회원가입이 실패하였습니다.");
-          error.go();
+          SignUpError.go("회원가입이 실패하였습니다.");
           return false;
         } else if (message.equals("exist")) {
-          SignUpError error = new SignUpError("이미 존재하는 아이디입니다.");
-          error.go();
+          SignUpError.go("이미 존재하는 아이디입니다.");
         } else {
           SuccessSignUpView.go();
           System.out.println("회원가입 성공");

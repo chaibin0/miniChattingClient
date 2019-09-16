@@ -1,5 +1,6 @@
 package chatting.view.error;
 
+import java.awt.Color;
 import java.awt.Window.Type;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -19,11 +20,13 @@ public class LoginExistError {
   public static void go() {
 
     frame = new JFrame();
+    frame.setTitle("Login Error - Chatting");
     frame.setType(Type.POPUP);
     frame.setBounds(100, 100, 291, 153);
 
     frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
     frame.getContentPane().setLayout(null);
+    frame.getContentPane().setBackground(new Color(238, 232, 170));
 
     JLabel errorLabel = new JLabel("이미 로그인 중입니다.");
     errorLabel.setBounds(191, 85, 209, 77);

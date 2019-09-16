@@ -4,6 +4,7 @@ import chatting.domain.Account;
 import chatting.model.ChatService;
 import chatting.model.RoomService;
 import java.awt.Color;
+import java.awt.Component;
 import java.awt.Font;
 import java.awt.Window.Type;
 import java.awt.event.ActionEvent;
@@ -27,6 +28,10 @@ import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
 import javax.swing.ScrollPaneConstants;
+import javax.swing.SwingConstants;
+import javax.swing.border.LineBorder;
+import javax.swing.border.EtchedBorder;
+import javax.swing.border.MatteBorder;
 
 
 public class ChatView {
@@ -95,6 +100,8 @@ public class ChatView {
       PrintWriter writer) {
 
     frame = new JFrame();
+    frame.setTitle(roomName + " - Chatting");
+    frame.getContentPane().setBackground(new Color(238, 232, 170));
     frame.addWindowListener(new WindowAdapter() {
 
       @Override
@@ -112,13 +119,14 @@ public class ChatView {
     frame.getContentPane().setLayout(null);
 
     textArea = new JTextArea(5, 20);
+    textArea.setAutoscrolls(false);
+    textArea.setBackground(new Color(255, 255, 224));
     textArea.setLineWrap(true);
     textArea.setEditable(false);
 
     scrollPane = new JScrollPane(textArea);
-    scrollPane.setAutoscrolls(true);
+    scrollPane.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);
     scrollPane.setBounds(12, 83, 257, 231);
-    scrollPane.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_NEVER);
     frame.getContentPane().add(scrollPane);
 
 
@@ -129,6 +137,8 @@ public class ChatView {
     frame.getContentPane().add(label);
 
     list = new JList<String>(members);
+    list.setBackground(new Color(255, 255, 224));
+    list.setBorder(new MatteBorder(1, 1, 1, 1, (Color) new Color(0, 0, 0)));
     list.setBounds(294, 83, 113, 231);
     list.setVisibleRowCount(10);
     frame.getContentPane().add(list);
@@ -178,10 +188,18 @@ public class ChatView {
     frame.getContentPane().add(btnNewButton);
 
     titleLabel = new JLabel(roomName);
+    titleLabel.setFont(new Font("휴먼둥근헤드라인", Font.BOLD, 12));
+    titleLabel.setBackground(new Color(240, 255, 255));
+    titleLabel.setHorizontalAlignment(SwingConstants.CENTER);
+    titleLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
+    titleLabel.setBorder(new LineBorder(new Color(0, 0, 0)));
     titleLabel.setBounds(69, 29, 200, 44);
     frame.getContentPane().add(titleLabel);
 
     numberLabel = new JLabel(String.valueOf(roomNumber));
+    numberLabel.setHorizontalAlignment(SwingConstants.CENTER);
+    numberLabel.setAlignmentX(0.5f);
+    numberLabel.setBorder(new LineBorder(new Color(0, 0, 0)));
     numberLabel.setBounds(12, 29, 45, 44);
     frame.getContentPane().add(numberLabel);
 

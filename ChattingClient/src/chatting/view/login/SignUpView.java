@@ -9,6 +9,9 @@ import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPasswordField;
 import javax.swing.JTextField;
+import java.awt.Color;
+import javax.swing.SwingConstants;
+import java.awt.Font;
 
 
 public class SignUpView extends JFrame {
@@ -26,6 +29,8 @@ public class SignUpView extends JFrame {
    */
   public SignUpView() {
 
+    getContentPane().setBackground(new Color(240, 230, 140));
+    setTitle("SignUp - Chatting");
     setName("Chatting signUp");
     setResizable(false);
     setSize(new Dimension(400, 500));
@@ -85,5 +90,11 @@ public class SignUpView extends JFrame {
     pwdField = new JPasswordField();
     pwdField.setBounds(170, 172, 155, 44);
     getContentPane().add(pwdField);
+
+    JLabel signUpLabel = new JLabel("회원가입");
+    signUpLabel.setFont(new Font("휴먼둥근헤드라인", Font.PLAIN, 20));
+    signUpLabel.setHorizontalAlignment(SwingConstants.CENTER);
+    signUpLabel.setBounds(120, 26, 155, 44);
+    getContentPane().add(signUpLabel);
   }
 }

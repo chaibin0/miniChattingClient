@@ -22,6 +22,9 @@ import javax.swing.JTable;
 import javax.swing.ListSelectionModel;
 import javax.swing.ScrollPaneConstants;
 import javax.swing.table.DefaultTableModel;
+import java.awt.Color;
+import javax.swing.JLabel;
+import javax.swing.SwingConstants;
 
 
 
@@ -36,6 +39,7 @@ public class RoomView {
   private static DefaultTableModel tableModel;
 
   private static JButton reFreshButton;
+  private static JLabel listLabel;
 
   /**
    * 채팅방 리스트를 보여주는 메소드.
@@ -94,6 +98,8 @@ public class RoomView {
   private static void initialize(Vector<Vector<String>> roomList) {
 
     frame = new JFrame();
+    frame.setTitle("Room List - Chatting");
+    frame.getContentPane().setBackground(new Color(250, 250, 210));
     frame.addWindowListener(new WindowAdapter() {
 
       @Override
@@ -117,7 +123,7 @@ public class RoomView {
     scrollPane.setSize(new Dimension(400, 400));
     scrollPane.setPreferredSize(new Dimension(400, 400));
 
-    scrollPane.setBounds(30, 30, 340, 398);
+    scrollPane.setBounds(30, 55, 340, 373);
     scrollPane.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);
     scrollPane.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
 
@@ -125,6 +131,7 @@ public class RoomView {
     frame.getContentPane().add(scrollPane);
 
     panel = new JPanel();
+    panel.setBackground(new Color(245, 245, 245));
     panel.setAlignmentX(Component.LEFT_ALIGNMENT);
     scrollPane.setViewportView(panel);
 
@@ -208,6 +215,11 @@ public class RoomView {
     });
     searchButton.setBounds(218, 438, 70, 23);
     frame.getContentPane().add(searchButton);
+    
+    listLabel = new JLabel("채팅방 리스트");
+    listLabel.setHorizontalAlignment(SwingConstants.CENTER);
+    listLabel.setBounds(145, 30, 119, 15);
+    frame.getContentPane().add(listLabel);
     frame.setResizable(false);
 
   }
